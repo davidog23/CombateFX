@@ -11,7 +11,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
 
-public class SampleController {
+public class RootController {
 
     private Jugador player;
     private Jugador target;
