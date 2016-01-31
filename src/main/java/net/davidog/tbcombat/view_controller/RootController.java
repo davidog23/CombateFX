@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import model.Jugador;
+import net.davidog.tbcombat.model.Jugador;
 
 import java.io.IOException;
 import java.io.OutputStream;

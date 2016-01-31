@@ -1,6 +1,6 @@
 package net.davidog.tbcombat.view_controller;
 
-import model.Jugador;
+import net.davidog.tbcombat.model.Jugador;
 
 /**
  * Interface para controllers.

@@ -2,6 +2,7 @@ group 'net.davidog'
 version '0.1'
 
 apply plugin: 'java'
+apply plugin: 'idea'
 
 sourceCompatibility = 1.8
 
@@ -10,4 +11,15 @@ repositories {
 }
 
 dependencies {
+    compile 'commons-io:commons-io:2.4'
 }
+
+jar {
+    baseName = 'TBCombat'
+    version = '0.1'
+    manifest {
+        attributes 'Main-Class': 'net.davidog.tbcombat.model.ClientCombate'
+    }
+}
+
+
