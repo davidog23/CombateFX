@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Main extends Application {
 
     public Stage primaryStage;
-    public RootController controller;
+    public InitController controller;
 
     public Main(){}
 
@@ -28,7 +28,7 @@ public class Main extends Application {
     public void initApp() throws IOException
     {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("Root.fxml"));
+        loader.setLocation(getClass().getResource("Init.fxml"));
         controller = loader.getController();
         Parent root = loader.load();
         primaryStage.setScene(new Scene(root));

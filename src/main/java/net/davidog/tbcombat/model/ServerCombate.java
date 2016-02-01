@@ -7,7 +7,7 @@ import java.util.Vector;
 
 public class ServerCombate {
 	
-	public static void main(String[] args) throws IOException {
+	public static void runServer(String[] args) throws IOException {
 		Exception excep = null;
 		Vector<SocketWrapper> excepteds = new Vector<>();
 		Vector<MatchThread> matches = new Vector<>();

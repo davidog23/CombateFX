@@ -1,5 +1,7 @@
 package net.davidog.tbcombat.model;
 
+import net.davidog.tbcombat.utils.Util;
+
 import java.io.Serializable;
 import java.util.Random;
 import java.util.Scanner;

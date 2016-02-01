@@ -7,6 +7,4 @@ import net.davidog.tbcombat.model.Jugador;
  * Created by David on 13/01/2016.
  */
 public interface IGameController {
-
-    public void setPlayers(Jugador player, Jugador target);
 }

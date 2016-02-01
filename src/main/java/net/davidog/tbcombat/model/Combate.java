@@ -1,5 +1,7 @@
 package net.davidog.tbcombat.model;
 
+import net.davidog.tbcombat.utils.Util;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Random;
@@ -11,14 +13,14 @@ import java.util.Random;
  * Date: 14/08/2015
  */
 public abstract class Combate {
-	public static void runOffline()
+	public static void runOffline(boolean multiplayer)
 	{
 		//Seleccion de modo
 		int modo = Util.menu("Seleccione modo de juego: \n1. Un jugador\n2. Dos jugadores", 2);
 
 		//Creacion de personaje
 		Jugador j1 = Jugador.init();
-		Jugador j2 = modo == 1 ? Jugador.initRandom() : Jugador.init();
+		Jugador j2 = multiplayer ? Jugador.init() : Jugador.initRandom();
 
 		//Bucle principal
 		do {
