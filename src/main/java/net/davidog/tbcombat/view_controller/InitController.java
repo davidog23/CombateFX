@@ -41,13 +41,12 @@ public class InitController implements IGameController{
     }
 
     private SocketWrapper loadServer() {
-        Window<InitController> window;
+        Window<SelectServerController> window;
         try {
-            Util.loadWindow(this.getClass(), getClass().getResource("SelectServer.fxml"));
+            window = Util.loadWindow(SelectServerController.class, getClass().getResource("SelectServer.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        window
     }
 
     public void init(boolean debug) {

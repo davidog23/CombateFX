@@ -4,6 +4,7 @@ import javafx.stage.Stage;
 import net.davidog.tbcombat.view_controller.IGameController;
 
 /**
+ * Wrapper for Stage and Controller.
  * Created by David on 01/02/2016.
  */
 public class Window<T extends IGameController> {
