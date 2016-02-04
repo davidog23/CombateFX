@@ -21,7 +21,7 @@ public class Main extends Application {
 
         initApp();
 
-        primaryStage.setTitle("CombateFX");
+        primaryStage.setTitle("TB Combat");
         primaryStage.show();
     }
 
@@ -29,9 +29,25 @@ public class Main extends Application {
     {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Init.fxml"));
-        controller = loader.getController();
+        loader.setControllerFactory(clazz -> {
+            if (clazz == InitController.class) {
+                return new InitController(this.primaryStage);
+            } else {
+                // default behavior:
+                try {
+                    return clazz.newInstance();
+                } catch (Exception exc) {
+                    throw new RuntimeException(exc);
+                }
+            }
+        });
         Parent root = loader.load();
+        controller = loader.getController();
         primaryStage.setScene(new Scene(root));
+    }
+
+    public Main getMain() {
+        return this;
     }
 
     public static void main(String[] args) {

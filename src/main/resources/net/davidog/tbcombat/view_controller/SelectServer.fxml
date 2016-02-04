@@ -3,18 +3,17 @@
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.6105527638190955" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane dividerPositions="0.6105527638190955" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.davidog.tbcombat.view_controller.SelectServerController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
-            <TableView editable="true" prefHeight="196.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TableView fx:id="table" editable="true" prefHeight="196.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="Name" />
-                <TableColumn prefWidth="75.0" text="Address" />
-                  <TableColumn prefWidth="75.0" text="Port" />
+                <TableColumn fx:id="name" prefWidth="75.0" text="Name" />
+                <TableColumn fx:id="address" prefWidth="75.0" text="Address" />
+                  <TableColumn fx:id="port" prefWidth="75.0" text="Port" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -27,12 +26,12 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Add Server">
+                        <Button fx:id="addServerBtn" mnemonicParsing="false" text="Add Server">
                            <font>
                               <Font name="Microsoft JhengHei UI Light" size="18.0" />
                            </font>
                         </Button>
-                        <Button layoutX="203.0" layoutY="25.0" mnemonicParsing="false" text="Remove Server">
+                        <Button fx:id="removeServerBtn" layoutX="203.0" layoutY="25.0" mnemonicParsing="false" text="Remove Server">
                            <font>
                               <Font name="Microsoft JhengHei UI Light" size="18.0" />
                            </font>
@@ -47,12 +46,12 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="20.0" layoutY="20.0" prefHeight="190.0" prefWidth="498.0" spacing="30.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Conect to Selection">
+                        <Button fx:id="connectBtn" mnemonicParsing="false" text="Conect to Selection">
                            <font>
                               <Font name="Microsoft JhengHei UI Light" size="18.0" />
                            </font>
                         </Button>
-                        <Button layoutX="203.0" layoutY="25.0" mnemonicParsing="false" text="Direct Connection">
+                        <Button fx:id="directConnectBtn" layoutX="203.0" layoutY="25.0" mnemonicParsing="false" text="Direct Connection">
                            <font>
                               <Font name="Microsoft JhengHei UI Light" size="18.0" />
                            </font>

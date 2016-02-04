@@ -19,14 +19,14 @@ dependencies {
 // Task "distZip" added by plugin "application":
 distZip.shouldRunAfter(build)
 
-mainClassName = "net.davidog.testing.TestingDependencies"
+mainClassName = "net.davidog.tbcombat.view_controller.Main"
 jar {
     archivesBaseName = 'TBCombat'
     // Keep jar clean:
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
 
     manifest {
-        attributes 'Main-Class': 'net.davidog.tbcombat.view_controller.Main',
+        attributes 'Main-Class': mainClassName,
                 'Class-Path': configurations.runtime.files.collect { "$it.name" }.join(' ')
     }
     // How-to add class path:
