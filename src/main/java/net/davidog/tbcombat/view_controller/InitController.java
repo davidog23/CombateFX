@@ -12,6 +12,7 @@ import net.davidog.tbcombat.utils.Window;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 
 public class InitController implements IGameController{
 

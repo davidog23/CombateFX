@@ -37,7 +37,6 @@ public class Util {
         Stage stage = new Stage();
 
         loader.setLocation(fxmlLocation);
-        T controller = loader.getController();
         loader.setControllerFactory(clazz -> {
             if (clazz == type) {
                 try {
@@ -54,6 +53,7 @@ public class Util {
                 }
             }
         });
+        T controller = loader.getController();
         Parent root = loader.load();
         stage.setScene(new Scene(root));
         return new Window<>(controller, stage);

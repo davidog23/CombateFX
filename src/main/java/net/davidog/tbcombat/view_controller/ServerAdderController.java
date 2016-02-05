@@ -5,13 +5,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import net.davidog.tbcombat.utils.Window;
+import javafx.stage.Stage;
 
 /**
  * Controller for server add popup.
  * Created by David on 02/02/2016.
  */
 public class ServerAdderController implements IGameController{
+    private Stage stage;
+
     @FXML
     private TextField nameField;
     @FXML
@@ -26,6 +28,10 @@ public class ServerAdderController implements IGameController{
     @FXML
     private Button cancelBtn;
 
+    public ServerAdderController(Stage stage) {
+        this.stage = stage;
+    }
+
     @FXML
     void initialize(){}
 
@@ -33,6 +39,4 @@ public class ServerAdderController implements IGameController{
     private void onKeyReleased(KeyEvent event) {
 
     }
-
-    public void setCaller(){}
 }

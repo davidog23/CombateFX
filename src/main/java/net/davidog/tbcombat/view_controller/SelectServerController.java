@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import net.davidog.tbcombat.model.SocketWrapper;
 import net.davidog.tbcombat.utils.GsonUtil;
 import net.davidog.tbcombat.utils.Reference;
@@ -24,6 +25,7 @@ import java.nio.file.Paths;
  * Created by David on 02/02/2016.
  */
 public class SelectServerController implements IGameController {
+    private final Stage stage;
     private ObservableList<ServerInfo> serverData;
     private SocketWrapper serverSelected;
 
@@ -46,6 +48,10 @@ public class SelectServerController implements IGameController {
     @FXML
     private Button directConnectBtn;
 
+    public SelectServerController(Stage stage) {
+        this.stage = stage;
+    }
+    
     @FXML
     void initialize() throws IOException {
         Path serverFilePath = Paths.get(Reference.SERVER_INFO_PATH);
