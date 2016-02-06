@@ -8,4 +8,24 @@ import java.io.File;
  */
 public class Reference {
     public static final String SERVER_INFO_PATH = System.getProperty("user.dir") + File.separator + "cfg" + File.separator + "servers.json";
+
+    /*
+    Iniciar controladores con constructores con argumentos.
+    loader.setControllerFactory(clazz -> {
+        if (clazz == type) {
+            try {
+                return ((Constructor<T>) Array.get(type.getConstructors(), 0)).newInstance(stage);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            // default behavior:
+            try {
+                return clazz.newInstance();
+            } catch (Exception exc) {
+                throw new RuntimeException(exc);
+            }
+        }
+    });
+    */
 }

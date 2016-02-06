@@ -7,14 +7,12 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import net.davidog.tbcombat.model.SocketWrapper;
 import net.davidog.tbcombat.utils.Util;
-import net.davidog.tbcombat.utils.Window;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.lang.reflect.InvocationTargetException;
 
-public class InitController implements IGameController{
+public class InitController {
 
     private Stage stage;
     private boolean debug;
@@ -29,9 +27,7 @@ public class InitController implements IGameController{
     @FXML
     private Button server;
 
-    public InitController(Stage stage) {
-        this.stage = stage;
-    }
+    public InitController() {}
 
     @FXML
     void initialize() {
@@ -50,11 +46,11 @@ public class InitController implements IGameController{
     }
 
     private SocketWrapper loadServer() throws IOException {
-        Window<SelectServerController> window = Util.loadWindow(SelectServerController.class, getClass().getResource("SelectServer.fxml"));
-        Stage serverMStage = window.getStage();
+        SelectServerController controller = Util.loadWindow(SelectServerController.class, getClass().getResource("SelectServer.fxml"));
+        Stage serverMStage = controller.getStage();
         serverMStage.setTitle("Server Management");
         serverMStage.showAndWait();
-        return window.getController().getServerSelected();
+        return controller.getServerSelected();
     }
 
     public void init(boolean debug) {
@@ -68,4 +64,11 @@ public class InitController implements IGameController{
         }
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 }

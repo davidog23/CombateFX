@@ -21,11 +21,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
+ * IDEA: Crear los stages en los controller para poder sobreescribir el close(). A demas elimina la necesidad que pasar el stage al controller como parametro.
  * Controller for server selection.
  * Created by David on 02/02/2016.
  */
 public class SelectServerController implements IGameController {
-    private final Stage stage;
+    private final Stage stage = new Stage() {
+        @Override
+        public void close() {
+            try {
+                GsonUtil.writeGson(new File(Reference.SERVER_INFO_PATH), serverData);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            super.close();
+        }
+    };
+
     private ObservableList<ServerInfo> serverData;
     private SocketWrapper serverSelected;
 
@@ -48,9 +60,7 @@ public class SelectServerController implements IGameController {
     @FXML
     private Button directConnectBtn;
 
-    public SelectServerController(Stage stage) {
-        this.stage = stage;
-    }
+    public SelectServerController() {}
     
     @FXML
     void initialize() throws IOException {
@@ -75,7 +85,7 @@ public class SelectServerController implements IGameController {
         return this.serverSelected;
     }
 
-    private void onClose() throws IOException {
-        GsonUtil.writeGson(new File(Reference.SERVER_INFO_PATH), serverData);
+    public Stage getStage() {
+        return stage;
     }
 }

@@ -39,4 +39,9 @@ public class ServerAdderController implements IGameController{
     private void onKeyReleased(KeyEvent event) {
 
     }
+
+    @Override
+    public Stage getStage() {
+        return stage;
+    }
 }
