@@ -40,13 +40,18 @@ public class Util {
         return controller;
     }
 
-    public static <T extends IGameController> T loadWindowWithArgument(Class<T> controllerType, URL fxmlLocation, Object argument) throws IOException {
+    public static <T extends IGameController> T loadWindowWithArgument(Class<T> controllerType, URL fxmlLocation, Object... argument) throws IOException {
         FXMLLoader loader = new FXMLLoader(fxmlLocation);
 
         loader.setControllerFactory(clazz -> {
             if (clazz == controllerType) {
                 try {
-                    return ((Constructor<T>) Array.get(controllerType.getConstructors(), 0)).newInstance(argument);
+                    for(Constructor<?> c: controllerType.getConstructors()) {
+                        if(c.getParameterCount() == argument.length) {
+                            return ((Constructor<T>) c).newInstance(argument);
+                        }
+                    }
+                    throw new IllegalArgumentException();
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }

@@ -12,6 +12,7 @@ import net.davidog.tbcombat.model.SocketWrapper;
 import net.davidog.tbcombat.utils.GsonUtil;
 import net.davidog.tbcombat.utils.Reference;
 import net.davidog.tbcombat.utils.ServerInfo;
+import net.davidog.tbcombat.utils.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,6 +78,17 @@ public class SelectServerController implements IGameController {
 
     @FXML
     private void addServerHandler(ActionEvent event) {
+        try {
+            ServerAdderController adderController = Util.loadWindowWithArgument(ServerAdderController.class, Main.class.getResource("ServerAdder.fxml"), serverData);
+            adderController.getStage().setTitle("Añadir Servidor");
+            adderController.getStage().show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void removeServerHandler() {
 
     }
 
