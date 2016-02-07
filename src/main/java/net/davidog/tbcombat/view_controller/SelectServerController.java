@@ -12,7 +12,6 @@ import net.davidog.tbcombat.model.SocketWrapper;
 import net.davidog.tbcombat.utils.GsonUtil;
 import net.davidog.tbcombat.utils.Reference;
 import net.davidog.tbcombat.utils.ServerInfo;
-import net.davidog.tbcombat.utils.Window;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,7 +77,7 @@ public class SelectServerController implements IGameController {
 
     @FXML
     private void addServerHandler(ActionEvent event) {
-        Window<ServerAdderController> popup;
+
     }
 
     public SocketWrapper getServerSelected() {

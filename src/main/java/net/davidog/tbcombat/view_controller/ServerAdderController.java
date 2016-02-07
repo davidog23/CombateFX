@@ -28,8 +28,8 @@ public class ServerAdderController implements IGameController{
     @FXML
     private Button cancelBtn;
 
-    public ServerAdderController(Stage stage) {
-        this.stage = stage;
+    public ServerAdderController() {
+        this.stage = new Stage();
     }
 
     @FXML

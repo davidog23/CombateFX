@@ -32,8 +32,34 @@ public class Util {
 		return S.nextLine();
 	}
 
-	public static <T extends IGameController> T loadWindow(Class<T> type, URL fxmlLocation) throws IOException {
+	public static <T extends IGameController> T loadWindow(Class<T> controllerType, URL fxmlLocation) throws IOException {
         FXMLLoader loader = new FXMLLoader(fxmlLocation);
+        Parent root = loader.load();
+        T controller = loader.getController();
+        controller.getStage().setScene(new Scene(root));
+        return controller;
+    }
+
+    public static <T extends IGameController> T loadWindowWithArgument(Class<T> controllerType, URL fxmlLocation, Object argument) throws IOException {
+        FXMLLoader loader = new FXMLLoader(fxmlLocation);
+
+        loader.setControllerFactory(clazz -> {
+            if (clazz == controllerType) {
+                try {
+                    return ((Constructor<T>) Array.get(controllerType.getConstructors(), 0)).newInstance(argument);
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                // default behavior:
+                try {
+                    return clazz.newInstance();
+                } catch (Exception exc) {
+                    throw new RuntimeException(exc);
+                }
+            }
+        });
+
         Parent root = loader.load();
         T controller = loader.getController();
         controller.getStage().setScene(new Scene(root));
