@@ -15,6 +15,7 @@ import java.io.PrintStream;
 public class InitController {
 
     private Stage stage;
+    private SocketWrapper connectionToServer;
     private boolean debug;
 
     @FXML
@@ -46,11 +47,12 @@ public class InitController {
     }
 
     private SocketWrapper loadServer() throws IOException {
-        SelectServerController controller = Util.loadWindow(SelectServerController.class, getClass().getResource("SelectServer.fxml"));
+        connectionToServer = new SocketWrapper();
+        SelectServerController controller = Util.loadWindowWithArgument(SelectServerController.class, getClass().getResource("SelectServer.fxml"), connectionToServer);
         Stage serverMStage = controller.getStage();
         serverMStage.setTitle("Server Management");
         serverMStage.showAndWait();
-        return controller.getServerSelected();
+        return connectionToServer;
     }
 
     public void init(boolean debug) {

@@ -16,6 +16,7 @@ import net.davidog.tbcombat.utils.Util;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -60,6 +61,9 @@ public class SelectServerController implements IGameController {
     @FXML
     private Button directConnectBtn;
 
+    public SelectServerController(SocketWrapper wrapperToFill) {
+        serverSelected = wrapperToFill;
+    }
     public SelectServerController() {}
     
     @FXML
@@ -79,17 +83,33 @@ public class SelectServerController implements IGameController {
     @FXML
     private void addServerHandler(ActionEvent event) {
         try {
-            ServerAdderController adderController = Util.loadWindowWithArgument(ServerAdderController.class, Main.class.getResource("ServerAdder.fxml"), serverData);
-            adderController.getStage().setTitle("Añadir Servidor");
-            adderController.getStage().show();
+            if (event.getSource() == addServerBtn) {
+                ServerAdderController adderController = Util.loadWindowWithArgument(ServerAdderController.class, Main.class.getResource("ServerAdder.fxml"), serverData);
+                adderController.getStage().setTitle("Añadir Servidor");
+                adderController.getStage().showAndWait();
+            } else if(event.getSource() == directConnectBtn) {
+                ServerAdderController adderController = Util.loadWindowWithArgument(ServerAdderController.class, Main.class.getResource("ServerAdder.fxml"), serverSelected);
+                adderController.getStage().setTitle("Conectar con servidor");
+                adderController.getStage().showAndWait();
+                if(!serverSelected.isVoid()) {
+                    stage.close();
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    private void removeServerHandler() {
+    private void removeServerHandler(ActionEvent event) {
+        int index = table.getSelectionModel().getSelectedIndex();
+        table.getItems().remove(index);
+    }
 
+    @FXML
+    private void connectHandler(ActionEvent event) throws IOException {
+        ServerInfo infoServer = table.getItems().get(table.getSelectionModel().getSelectedIndex());
+        serverSelected.initialize(new Socket(infoServer.getAddress(), infoServer.getPort()), false);
     }
 
     public SocketWrapper getServerSelected() {

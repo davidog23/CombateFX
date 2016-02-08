@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.davidog.tbcombat.view_controller.ServerAdderController">
+<VBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.davidog.tbcombat.view_controller.ServerAdderController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
          <children>
-            <Label text="Name: ">
+            <Label fx:id="lblName" text="Name: ">
                <font>
                   <Font name="Microsoft JhengHei UI Light" size="18.0" />
                </font>
@@ -27,7 +28,7 @@
                   <Font name="Microsoft JhengHei UI Light" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="addressField" />
+            <TextField fx:id="addressField" onKeyReleased="#onKeyReleased" />
          </children>
          <padding>
             <Insets left="20.0" />
@@ -39,7 +40,7 @@
                   <Font name="Microsoft JhengHei UI Light" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="portField">
+            <TextField fx:id="portField" onKeyReleased="#onKeyReleased">
                <HBox.margin>
                   <Insets left="25.0" />
                </HBox.margin>
@@ -50,7 +51,7 @@
          </padding></HBox>
       <BorderPane>
          <right>
-            <Label fx:id="lblValid" text="Label" BorderPane.alignment="CENTER">
+            <Label fx:id="lblValid" text="Valid?" BorderPane.alignment="CENTER">
                <font>
                   <Font name="Microsoft JhengHei UI Light" size="18.0" />
                </font>
@@ -65,12 +66,12 @@
       </BorderPane>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
          <children>
-            <Button fx:id="addBtn" mnemonicParsing="false" text="Add">
+            <Button fx:id="addBtn" mnemonicParsing="false" onAction="#addServerHandler" text="Add">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="cancelBtn" layoutX="137.0" layoutY="36.0" mnemonicParsing="false" text="Cancel">
+            <Button fx:id="cancelBtn" layoutX="137.0" layoutY="36.0" mnemonicParsing="false" onAction="#cancel" text="Cancel">
                <font>
                   <Font size="14.0" />
                </font>

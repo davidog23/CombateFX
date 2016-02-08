@@ -10,9 +10,20 @@ public class SocketWrapper {
 	private DataOutputStream dataToClient;
 	private ObjectInputStream objectFromClient;
 	private ObjectOutputStream objectToClient;
+
+    private boolean vacio;
 	
 	public SocketWrapper(Socket socket, boolean server) throws IOException
 	{
+		this.socket = socket;
+		initialize(socket, server);
+	}
+
+	public SocketWrapper() {
+        this.vacio = true;
+    }
+
+	public void initialize(Socket socket, boolean server) throws IOException {
 		this.socket = socket;
 		if (server) {
 			dataFromClient = new DataInputStream(socket.getInputStream());
@@ -25,6 +36,7 @@ public class SocketWrapper {
 			objectToClient = new ObjectOutputStream(socket.getOutputStream());
 			objectFromClient = new ObjectInputStream(socket.getInputStream());
 		}
+        this.vacio = false;
 	}
 	
 	public Object readObject() throws ClassNotFoundException, IOException
@@ -74,5 +86,8 @@ public class SocketWrapper {
 		}
 		return true;
 	}
-	
+
+    public boolean isVoid() {
+        return vacio;
+    }
 }
