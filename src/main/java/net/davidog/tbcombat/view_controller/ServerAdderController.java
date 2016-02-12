@@ -27,7 +27,6 @@ public class ServerAdderController implements IGameController{
     private Stage stage;
 
     private Service<Void> checkerThread;
-    private boolean stopThread;
 
     private boolean directConnect;
     private SocketWrapper selectedServer;
@@ -52,15 +51,7 @@ public class ServerAdderController implements IGameController{
     private Button cancelBtn;
 
     public ServerAdderController(Object o) throws IllegalArgumentException {
-        this.stopThread = false;
-
-        this.stage = new Stage() {
-            @Override
-            public void close() {
-                stopThread = true;
-                super.close();
-            }
-        };
+        this.stage = new Stage();
 
         if(o instanceof ObservableList) {
             this.serverData = (ObservableList<ServerInfo>) o;
@@ -89,7 +80,6 @@ public class ServerAdderController implements IGameController{
                     protected Void call() throws Exception {
                         try {
                             if (InetAddress.getByName(addressField.getText()).isReachable(1500) && !addressField.getText().equals("") && !portField.getText().equals("")) {
-                                server = new ServerInfo(nameField.getText(), addressField.getText(), Integer.parseInt(portField.getText()));
                                 Platform.runLater(() -> {
                                     addBtn.setDisable(false);
                                     lblValid.setText("Valid Address");
@@ -120,7 +110,12 @@ public class ServerAdderController implements IGameController{
     @FXML
     private void addServerHandler(ActionEvent event) throws IOException {
         if (!directConnect) {
-            serverData.add(server);
+            server = new ServerInfo(nameField.getText(), addressField.getText(), Integer.parseInt(portField.getText()));
+            try {
+                serverData.add(server);
+            } catch (UnsupportedOperationException e) {
+                e.printStackTrace();
+            }
         } else {
             selectedServer.initialize(new Socket(server.getAddress(), server.getPort()), false);
         }
@@ -140,7 +135,6 @@ public class ServerAdderController implements IGameController{
         stage.close();
     }
 
-    @Override
     public Stage getStage() {
         return stage;
     }

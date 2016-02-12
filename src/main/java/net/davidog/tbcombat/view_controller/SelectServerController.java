@@ -3,11 +3,13 @@ package net.davidog.tbcombat.view_controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import net.davidog.tbcombat.model.SocketWrapper;
 import net.davidog.tbcombat.utils.GsonUtil;
 import net.davidog.tbcombat.utils.Reference;
@@ -27,19 +29,8 @@ import java.nio.file.Paths;
  * Created by David on 02/02/2016.
  */
 public class SelectServerController implements IGameController {
-    private final Stage stage = new Stage() {
-        @Override
-        public void close() {
-            try {
-                GsonUtil.writeGson(new File(Reference.SERVER_INFO_PATH), serverData);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            super.close();
-        }
-    };
+    private Stage stage;
 
-    private ObservableList<ServerInfo> serverData;
     private SocketWrapper serverSelected;
 
     @FXML
@@ -60,31 +51,33 @@ public class SelectServerController implements IGameController {
     private Button connectBtn;
     @FXML
     private Button directConnectBtn;
+    private Main appInstance;
 
-    public SelectServerController(SocketWrapper wrapperToFill) {
+    public SelectServerController(SocketWrapper wrapperToFill, Main appInstance) {
+        this.appInstance = appInstance;
+        stage = new Stage();
         serverSelected = wrapperToFill;
     }
-    public SelectServerController() {}
+    public SelectServerController() {
+        stage = new Stage();
+    }
     
     @FXML
     void initialize() throws IOException {
-        Path serverFilePath = Paths.get(Reference.SERVER_INFO_PATH);
-        if(Files.notExists(serverFilePath.getParent())) { Files.createDirectory(serverFilePath.getParent()); }
-        if(Files.exists(serverFilePath)) {
-            serverData.setAll(GsonUtil.leerGson(serverFilePath.toFile(), ServerInfo.class));
-        } else {
-            serverData = FXCollections.emptyObservableList();
-        }
+        stage.setOnCloseRequest(event -> ((Stage)event.getSource()).close());
+
         name.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         address.setCellValueFactory(cellData -> cellData.getValue().addressProperty());
         port.setCellValueFactory(cellData -> cellData.getValue().portProperty());
+
+        table.setItems(appInstance.getServerData());
     }
 
     @FXML
     private void addServerHandler(ActionEvent event) {
         try {
             if (event.getSource() == addServerBtn) {
-                ServerAdderController adderController = Util.loadWindowWithArgument(ServerAdderController.class, Main.class.getResource("ServerAdder.fxml"), serverData);
+                ServerAdderController adderController = Util.loadWindowWithArgument(ServerAdderController.class, Main.class.getResource("ServerAdder.fxml"), appInstance.getServerData());
                 adderController.getStage().setTitle("Añadir Servidor");
                 adderController.getStage().showAndWait();
             } else if(event.getSource() == directConnectBtn) {

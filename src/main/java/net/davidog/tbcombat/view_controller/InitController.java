@@ -9,14 +9,11 @@ import net.davidog.tbcombat.model.SocketWrapper;
 import net.davidog.tbcombat.utils.Util;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 
 public class InitController {
 
     private Stage stage;
-    private SocketWrapper connectionToServer;
-    private boolean debug;
+    private Main appInstance;
 
     @FXML
     private TextArea initConsole;
@@ -37,7 +34,7 @@ public class InitController {
 
 
     @FXML
-    public void onlineTrigger(ActionEvent event) {
+    public void onlineTrigger(ActionEvent event) { //WIP
         SocketWrapper server;
         try {
             server = loadServer();
@@ -47,23 +44,12 @@ public class InitController {
     }
 
     private SocketWrapper loadServer() throws IOException {
-        connectionToServer = new SocketWrapper();
-        SelectServerController controller = Util.loadWindowWithArgument(SelectServerController.class, getClass().getResource("SelectServer.fxml"), connectionToServer);
-        Stage serverMStage = controller.getStage();
+        SocketWrapper connectionToServer = new SocketWrapper();
+        SelectServerController selectServerController = Util.loadWindowWithArgument(SelectServerController.class, getClass().getResource("SelectServer.fxml"), connectionToServer, appInstance);
+        Stage serverMStage = selectServerController.getStage();
         serverMStage.setTitle("Server Management");
         serverMStage.showAndWait();
         return connectionToServer;
-    }
-
-    public void init(boolean debug) {
-        if(debug) {
-            System.setOut(new PrintStream(new OutputStream() {
-                @Override
-                public void write(int b) throws IOException {
-                    initConsole.appendText(String.valueOf((char) b));
-                }
-            }));
-        }
     }
 
     public Stage getStage() {
@@ -72,5 +58,9 @@ public class InitController {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public void setAppInstance(Main appInstance) {
+        this.appInstance = appInstance;
     }
 }

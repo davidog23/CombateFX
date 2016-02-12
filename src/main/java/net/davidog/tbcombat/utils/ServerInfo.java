@@ -2,6 +2,7 @@ package net.davidog.tbcombat.utils;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
@@ -11,12 +12,12 @@ import javafx.beans.property.StringProperty;
 public class ServerInfo {
     private StringProperty name;
     private StringProperty address;
-    private SimpleIntegerProperty port;
+    private IntegerProperty port;
 
     public ServerInfo(String name, String address, int port) {
-        this.name.setValue(name);
-        this.address.setValue(address);
-        this.port.set(port);
+        this.name = new SimpleStringProperty(name);
+        this.address = new SimpleStringProperty(address);
+        this.port = new SimpleIntegerProperty(port);
     }
 
     public String getName() {
