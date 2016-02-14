@@ -12,15 +12,15 @@ import com.google.gson.reflect.TypeToken;
  * Created by David on 02/02/2016.
  */
 public class GsonUtil {
-    public static <T> List<T> leerGson(File path, Class<T> type) throws FileNotFoundException {
+    public static <T> List<T> leerGson(File path, Type type) throws FileNotFoundException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Type collectionType = new TypeToken<List<T>>(){}.getType();
-        return gson.fromJson(new FileReader(path), collectionType);
+        return gson.fromJson(new FileReader(path), type);
     }
 
     public static <T> void writeGson(File path, List<T> list) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(list);
+        Type collectionType = new TypeToken<List<T>>(){}.getType();
+        String json = gson.toJson(list, collectionType);
         FileWriter file = new FileWriter(path);
         file.write(json);
         file.close();
