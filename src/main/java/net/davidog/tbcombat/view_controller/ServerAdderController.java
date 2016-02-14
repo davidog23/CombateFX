@@ -6,15 +6,14 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import net.davidog.tbcombat.model.SocketWrapper;
 import net.davidog.tbcombat.utils.ServerInfo;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -32,7 +31,6 @@ public class ServerAdderController implements IGameController{
     private SocketWrapper selectedServer;
 
     private ObservableList<ServerInfo> serverData;
-    private ServerInfo server;
 
     @FXML
     private TextField nameField;
@@ -86,7 +84,11 @@ public class ServerAdderController implements IGameController{
                                 });
                             } else {
                                 Platform.runLater(() -> {
-                                    addBtn.setDisable(false);
+                                    if(!addressField.getText().equals("") && !portField.getText().equals("")) {
+                                        addBtn.setDisable(false);
+                                    } else {
+                                        addBtn.setDisable(true);
+                                    }
                                     lblValid.setText("Not Connection");
                                 });
                             }
@@ -110,14 +112,22 @@ public class ServerAdderController implements IGameController{
     @FXML
     private void addServerHandler(ActionEvent event) throws IOException {
         if (!directConnect) {
-            server = new ServerInfo(nameField.getText(), addressField.getText(), Integer.parseInt(portField.getText()));
+            ServerInfo server = new ServerInfo(nameField.getText(), addressField.getText(), Integer.parseInt(portField.getText()));
             try {
                 serverData.add(server);
             } catch (UnsupportedOperationException e) {
                 e.printStackTrace();
             }
         } else {
-            selectedServer.initialize(new Socket(server.getAddress(), server.getPort()), false);
+            try {
+                selectedServer.initialize(new Socket(addressField.getText(), Integer.parseInt(portField.getText())), false);
+            } catch (ConnectException e) {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Connection timeout");
+                error.setHeaderText("Se ha excedido el tiempo de intento de conexión.");
+                error.setContentText("Es posible que haya escrito la dirección mal o que el servidor no esté disponible.");
+                error.showAndWait();
+            }
         }
         stage.close();
     }

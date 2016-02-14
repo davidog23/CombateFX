@@ -90,4 +90,7 @@ public class SocketWrapper {
     public boolean isVoid() {
         return vacio;
     }
+	public void setVoid(boolean vacio) {
+		this.vacio = vacio;
+	}
 }

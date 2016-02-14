@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -18,6 +19,7 @@ import net.davidog.tbcombat.utils.Util;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -102,7 +104,16 @@ public class SelectServerController implements IGameController {
     @FXML
     private void connectHandler(ActionEvent event) throws IOException {
         ServerInfo infoServer = table.getItems().get(table.getSelectionModel().getSelectedIndex());
-        serverSelected.initialize(new Socket(infoServer.getAddress(), infoServer.getPort()), false);
+        try {
+            serverSelected.initialize(new Socket(infoServer.getAddress(), infoServer.getPort()), false);
+        } catch (ConnectException e) {
+            /*Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Connection timeout");
+            error.setHeaderText("Se ha excedido el tiempo de intento de conexión.");
+            error.setContentText("Es posible que el servidor no esté disponible.");
+            error.showAndWait();*/
+            serverSelected.setVoid(false); //For debug persuposes.
+        }
     }
 
     public SocketWrapper getServerSelected() {

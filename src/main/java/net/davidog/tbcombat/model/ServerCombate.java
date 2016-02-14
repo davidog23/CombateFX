@@ -7,7 +7,7 @@ import java.util.Vector;
 
 public class ServerCombate {
 	
-	public static void runServer(String[] args) throws IOException {
+	public static void runServer(int port) throws IOException {
 		Exception excep = null;
 		Vector<SocketWrapper> excepteds = new Vector<>();
 		Vector<MatchThread> matches = new Vector<>();
@@ -16,9 +16,9 @@ public class ServerCombate {
 		mygc.setName("Match unregister thread");
 		mygc.start();
 
-		ServerSocket server = null;
+		ServerSocket server = new ServerSocket();
 		try {
-			server = new ServerSocket(5336);
+			server = new ServerSocket(port);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
