@@ -1,10 +1,12 @@
 package net.davidog.tbcombat.model;
 
+import net.davidog.tbcombat.network.SocketWrapper;
 import net.davidog.tbcombat.utils.Util;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Script de combate.
@@ -15,19 +17,20 @@ import java.util.Random;
 public abstract class Combate {
 	public static void runOffline(boolean multiplayer)
 	{
+		Scanner S = new Scanner(System.in);
 		//Seleccion de modo
-		int modo = Util.menu("Seleccione modo de juego: \n1. Un jugador\n2. Dos jugadores", 2);
+		int modo = Util.menu("Seleccione modo de juego: \n1. Un jugador\n2. Dos jugadores", 2, S);
 
 		//Creacion de personaje
-		Jugador j1 = Jugador.init();
-		Jugador j2 = multiplayer ? Jugador.init() : Jugador.initRandom();
+		Jugador j1 = Jugador.init(S);
+		Jugador j2 = multiplayer ? Jugador.init(S) : Jugador.initRandom();
 
 		//Bucle principal
 		do {
 			j1.checkState();
 			j2.checkState();
-			int ataqueSeleccionado = j1.seleccionAtaque(j2);
-			int ataqueSeleccionadoAdversario = modo == 1 ? j2.seleccionAtaqueIA(j1) : j2.seleccionAtaque(j1); /*IA WIP*/
+			int ataqueSeleccionado = j1.seleccionAtaque(j2, S);
+			int ataqueSeleccionadoAdversario = modo == 1 ? j2.seleccionAtaqueIA(j1) : j2.seleccionAtaque(j1, S); /*IA WIP*/
 			ejecutarAtaque(j1, j2, ataqueSeleccionado, ataqueSeleccionadoAdversario);
 		} while (j1.getHp() > 0 && j2.getHp() > 0);
 
@@ -42,12 +45,14 @@ public abstract class Combate {
 		}else{
 			System.out.println("DRAW");
 		}
+		S.close();
 	}
 
 	public static void runOnline(String ip) throws IOException, ClassNotFoundException
 	{
+		Scanner S = new Scanner(System.in);
 		//Inicia el personaje
-		Jugador player = Jugador.init();
+		Jugador player = Jugador.init(S);
 		Jugador adversario = null;
 
 		if (player != null) {
@@ -75,7 +80,7 @@ public abstract class Combate {
                         case "select":
                             int select = 0;
                             if (player != null) {
-                                select = player.seleccionAtaque(adversario);
+                                select = player.seleccionAtaque(adversario, S);
                             }
                             conexion.writeInt(select);
                             break;
@@ -95,13 +100,13 @@ public abstract class Combate {
                     }
 				}
 				if (orden.equals("reset")) {
-					System.out.println("El adversario ha perdido la conexi�n con el servidor.");
+					System.out.println("El adversario ha perdido la conexión con el servidor.");
 					reset = true;
 				} else {
 					System.out.println(orden);
-					int opcion = Util.menu("�Quieres jugar de nuevo?\n1.S�\n2.No", 2);
+					int opcion = Util.menu("¿Quieres jugar de nuevo?\n1.Sí\n2.No", 2, S);
 					reset = opcion == 1;
-					player = reset ? Jugador.init() : null;
+					player = reset ? Jugador.init(S) : null;
 				} 
 			}
 			conexion.socket.close();

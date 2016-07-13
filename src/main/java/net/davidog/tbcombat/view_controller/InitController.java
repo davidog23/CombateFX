@@ -6,8 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
-import net.davidog.tbcombat.model.ServerCombate;
-import net.davidog.tbcombat.model.SocketWrapper;
+import net.davidog.tbcombat.network.ServerCombate;
+import net.davidog.tbcombat.network.SocketWrapper;
 import net.davidog.tbcombat.utils.Util;
 
 import java.io.IOException;

@@ -15,9 +15,7 @@ import java.util.Scanner;
 
 public class Util {
 
-	@SuppressWarnings("resource")
-	public static int menu(String mensaje, int nOpciones) {
-		Scanner S = new Scanner(System.in);
+	public static int menu(String mensaje, int nOpciones, Scanner S) {
 		int opcion;
 		do {
 			System.out.println("Inserta el número de la opción elegida.\n" + mensaje);

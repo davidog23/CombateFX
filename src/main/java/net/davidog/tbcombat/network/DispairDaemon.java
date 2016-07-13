@@ -1,4 +1,4 @@
-package net.davidog.tbcombat.model;
+package net.davidog.tbcombat.network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ListIterator;

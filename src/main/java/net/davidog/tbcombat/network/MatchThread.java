@@ -1,4 +1,7 @@
-package net.davidog.tbcombat.model;
+package net.davidog.tbcombat.network;
+
+import net.davidog.tbcombat.model.Combate;
+import net.davidog.tbcombat.model.Jugador;
 
 import java.io.IOException;
 import java.net.SocketException;

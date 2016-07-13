@@ -1,29 +1,19 @@
 package net.davidog.tbcombat.view_controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import net.davidog.tbcombat.model.SocketWrapper;
-import net.davidog.tbcombat.utils.GsonUtil;
-import net.davidog.tbcombat.utils.Reference;
+import net.davidog.tbcombat.network.SocketWrapper;
 import net.davidog.tbcombat.utils.ServerInfo;
 import net.davidog.tbcombat.utils.Util;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * IDEA: Crear los stages en los controller para poder sobreescribir el close(). A demas elimina la necesidad que pasar el stage al controller como parametro.
@@ -107,11 +97,11 @@ public class SelectServerController implements IGameController {
         try {
             serverSelected.initialize(new Socket(infoServer.getAddress(), infoServer.getPort()), false);
         } catch (ConnectException e) {
-            /*Alert error = new Alert(Alert.AlertType.ERROR);
+            Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Connection timeout");
             error.setHeaderText("Se ha excedido el tiempo de intento de conexión.");
             error.setContentText("Es posible que el servidor no esté disponible.");
-            error.showAndWait();*/
+            error.showAndWait();
             serverSelected.setVoid(false); //For debug persuposes.
         }
     }

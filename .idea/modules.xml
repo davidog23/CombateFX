@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Turn-BasedCombat.iml" filepath="$PROJECT_DIR$/Turn-BasedCombat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Turn-BasedCombat.iml" filepath="$PROJECT_DIR$/.idea/modules/Turn-BasedCombat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Turn-BasedCombat_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Turn-BasedCombat_main.iml" group="Turn-BasedCombat" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Turn-BasedCombat_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Turn-BasedCombat_test.iml" group="Turn-BasedCombat" />
     </modules>
   </component>
 </project>

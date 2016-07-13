@@ -1,8 +1,7 @@
-package net.davidog.tbcombat.model;
+package net.davidog.tbcombat.network;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.SocketException;
 import java.util.Vector;
 
 public class ServerCombate {
@@ -25,6 +24,9 @@ public class ServerCombate {
 
 		System.out.println("Servidor iniciado");
 		do {
+
+        } while(Boolean.FALSE);
+		/*do {
 			try {
 				SocketWrapper socket1;
 				SocketWrapper socket2;
@@ -50,7 +52,7 @@ public class ServerCombate {
 				if(!(e instanceof SocketException)) { excep = e; }
 				e.printStackTrace();
 			}
-		} while(excep == null);
+		} while(excep == null);*/
 		server.close();
 	}
 

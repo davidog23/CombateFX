@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import net.davidog.tbcombat.model.SocketWrapper;
+import net.davidog.tbcombat.network.SocketWrapper;
 import net.davidog.tbcombat.utils.ServerInfo;
 
 import java.io.IOException;

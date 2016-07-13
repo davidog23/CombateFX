@@ -3,8 +3,12 @@ package net.davidog.tbcombat.model;
 import net.davidog.tbcombat.utils.Util;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Clase abstracta que define la entidad del jugador.
@@ -12,127 +16,87 @@ import java.util.Scanner;
  * @author David Olmos
  * Date: 13/08/2015
  */
-public abstract class Jugador implements Serializable //Quiero ser capaz de enviar este objeto por IP
+public abstract class Jugador implements Serializable
 {
+    public static final double DEFAULT_DEF_REDUCTION = 0.45;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2843109286241379938L;
-	protected int oro, hp, mp, sp, atq, def, vel;
+
+	protected int hp, mp, atq, def, vel;
     protected String nombre;
-    protected int extraAtaque, extraDefensa, extraVelocidad;
-    protected int contadorParalisis, contadorCuracion, contadorSangrado, contadorExtraAtaque, contadorExtraDefensa, contadorExtraVelocidad;
     protected String clase;
 	protected boolean willAttack;
-	protected int totalAtq = 0, totalDef = 0, totalVel = 0;
+	protected Consumer<Jugador>[] attacks;
+	protected List<Estado> estados;
 
-    public Jugador(String nombre, int hp, int mp, int atq, int def, int vel)
+    protected Jugador(String nombre, int hp, int mp, int atq, int def, int vel)
     {
+		this.attacks = (Consumer<Jugador>[]) (new Consumer[5]);
+		this.estados = Collections.emptyList();
         this.nombre = nombre;
-        this.oro = 0;
         this.hp = hp;
         this.mp = mp;
-        this.sp = 0;
         this.atq = atq;
         this.def = def;
         this.vel = vel;
-        this.extraAtaque = 0;
-        this.extraDefensa = 0;
     }
-    
-    
-    public void checkState()
-    {
-    	if(this.contadorParalisis > 0)
-    	{
-    		this.willAttack = false;
-    		this.contadorParalisis--;
-    	}else{
-    		this.willAttack = true;
-    	}
-    	
-    	if(this.contadorCuracion > 0)
-    	{
-    		this.hp += 200;
-    		this.contadorCuracion--;
-    	}
-    	
-    	if(this.contadorSangrado > 0)
-    	{
-    		this.hp -= 75;
-    		this.contadorSangrado--;
-    	}
-    	
-    	if(this.contadorExtraAtaque > 0)
-    	{
-    		this.contadorExtraAtaque--;
-    	}else{
-    		this.extraAtaque = 0;
-    	}
-    	
-    	if(this.contadorExtraDefensa > 0)
-    	{
-    		this.contadorExtraDefensa--;
-    	}else{
-    		this.extraDefensa = 0;
-    	}
-    	
-    	if(this.contadorExtraVelocidad > 0)
-    	{
-    		this.contadorExtraVelocidad--;
-    	}else{
-    		this.extraVelocidad = 0;
-    	}
-    	this.totalAtq = this.atq + this.extraAtaque;
-    	this.totalDef = this.def + this.extraDefensa;
-    	this.totalVel = this.vel + this.extraVelocidad;
+
+    public void addState(Estado state, boolean stackable) {
+        if (stackable) {
+            estados.add(state);
+        } else {
+            state.putState(estados);
+        }
     }
-    
+
+	public void checkState() {
+		for (Estado e : estados) {
+			if (e.contador > 0) { e.getApplicator().accept(this); }
+			else { e.getRemoval().accept(this); }
+			e.contador--;
+		}
+		estados.removeIf(estado -> estado.contador < 0);
+	}
+
+    public boolean isTaggedAs(Estado.Estados tag) {
+        return estados.stream().anyMatch(estado -> estado.tag.contains(tag));
+    }
+
+    public List<Estado.Estados> getTags() {
+        List<Estado.Estados> res = Collections.emptyList();
+        estados.forEach(estado -> res.addAll(estado.tag.stream().filter(tag -> !res.contains(tag)).collect(Collectors.toList())));
+        return res;
+    }
+
+    public int calculateRealDamage(double atqMultiplier, Jugador other) {
+        int damage = (int) (atq * atqMultiplier) - (int) (other.def * DEFAULT_DEF_REDUCTION);
+        if (damage > 0) return damage;
+        return 0;
+    }
+
     public void attack(int ataque, Jugador target)
     {
     	if (willAttack) {
-			switch (ataque) {
-			case 1:
-				this.atq1(target);
-				break;
-			case 2:
-				this.atq2(target);
-				break;
-			case 3:
-				this.atq3(target);
-				break;
-			case 4:
-				this.atq4(target);
-				break;
-			case 5:
-				this.atq5(target);
-				break;
-			}
+			attacks[ataque].accept(target);
 		}else{
 			System.out.println("¡"+this.getNombre()+" no puede atacar porque ha sido paralizado!");
 		}
     }
-    
-    public abstract void atq1(Jugador target);
-    public abstract void atq2(Jugador target);
-    public abstract void atq3(Jugador target);
-    public abstract void atq4(Jugador target);
-    public abstract void atq5(Jugador target);
 
-    public abstract int seleccionAtaque(Jugador target);
+    public abstract int seleccionAtaque(Jugador target, Scanner S);
     public abstract int seleccionAtaqueIA(Jugador player);
     
-    @SuppressWarnings("resource")
-	public static Jugador init()
+	public static Jugador init(Scanner S)
 	{
         Jugador jugador;
-		Scanner S = new Scanner(System.in);
 
         int clase = Util.menu("Elige clase:\n" +
                 "1. Mago\n" +
                 "2. Espadachin\n" +
                 "3. Arquero\n" +
-                "4. Salir", 4);
+                "4. Salir", 4, S);
         switch(clase){
             case 1:
                 jugador = new Mago(S);
@@ -176,37 +140,22 @@ public abstract class Jugador implements Serializable //Quiero ser capaz de envi
 	public int getHp() {
 		return hp;
 	}
-
-	public void setHp(int hp) {
-		this.hp = hp;
+	public void takeDamage(int damage) {
+        double realDamage = damage - (int)(def * DEFAULT_DEF_REDUCTION);
+        if(realDamage > 0)
+        {
+            hp -= realDamage;
+        }
 	}
 
 	public int getMp() {
 		return mp;
 	}
-
 	public void setMp(int mp) {
 		this.mp = mp;
-	}
-
-	public boolean isParalizado() {
-		return contadorParalisis > 0;
-	}
-
-	public boolean isCurandose() {
-		return contadorCuracion > 0;
 	}
 
 	public String getNombre() {
 		return nombre;
 	}
-
-	public void setContadorParalisis(int contadorParalisis) {
-		this.contadorParalisis = contadorParalisis;
-	}
-
-	public void setContadorSangrado(int contadorSangrado) {
-		this.contadorSangrado = contadorSangrado;
-	}
-
 }
